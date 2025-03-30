@@ -4,6 +4,7 @@ const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const path = require('path');
+require('dotenv').config(); // Add this line to load environment variables
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -14,11 +15,11 @@ app.use(bodyParser.json());
 
 // Database connection configuration
 const dbConfig = {
-  host: 'sql12.freesqldatabase.com',
-  user: 'sql12770310',
-  password: '98Z5LAMlXb',
-  database: 'sql12770310',
-  port: 3306,
+  host: process.env.DB_HOST || 'sql12.freesqldatabase.com',
+  user: process.env.DB_USER || 'sql12770310',
+  password: process.env.DB_PASSWORD || '98Z5LAMlXb',
+  database: process.env.DB_NAME || 'sql12770310',
+  port: process.env.DB_PORT || 3306,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
