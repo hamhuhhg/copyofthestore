@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
@@ -33,7 +32,7 @@ async function initializeDatabase() {
   try {
     console.log('Checking database tables and initializing if needed...');
     const connection = await pool.getConnection();
-    
+
     // Check if users table exists and has data
     const [userTables] = await connection.query(`
       SELECT * 
@@ -41,7 +40,7 @@ async function initializeDatabase() {
       WHERE table_schema = '${dbConfig.database}' 
       AND table_name = 'users'
     `);
-    
+
     if (userTables.length === 0) {
       console.log('Creating users table...');
       await connection.query(`
@@ -54,7 +53,7 @@ async function initializeDatabase() {
           createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
       `);
-      
+
       // Insert default users
       console.log('Adding default users...');
       await connection.query(`
@@ -76,7 +75,7 @@ async function initializeDatabase() {
         `);
       }
     }
-    
+
     // Check if products table exists and has data
     const [productTables] = await connection.query(`
       SELECT * 
@@ -84,7 +83,7 @@ async function initializeDatabase() {
       WHERE table_schema = '${dbConfig.database}' 
       AND table_name = 'products'
     `);
-    
+
     if (productTables.length === 0) {
       console.log('Creating products table...');
       await connection.query(`
@@ -100,7 +99,7 @@ async function initializeDatabase() {
           createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
       `);
-      
+
       // Insert default products
       console.log('Adding default products...');
       await addDefaultProducts(connection);
@@ -112,7 +111,7 @@ async function initializeDatabase() {
         await addDefaultProducts(connection);
       }
     }
-    
+
     // Check if orders table exists
     const [orderTables] = await connection.query(`
       SELECT * 
@@ -120,7 +119,7 @@ async function initializeDatabase() {
       WHERE table_schema = '${dbConfig.database}' 
       AND table_name = 'orders'
     `);
-    
+
     if (orderTables.length === 0) {
       console.log('Creating orders table...');
       await connection.query(`
@@ -137,7 +136,7 @@ async function initializeDatabase() {
         )
       `);
     }
-    
+
     // Check if order_items table exists
     const [orderItemTables] = await connection.query(`
       SELECT * 
@@ -145,7 +144,7 @@ async function initializeDatabase() {
       WHERE table_schema = '${dbConfig.database}' 
       AND table_name = 'order_items'
     `);
-    
+
     if (orderItemTables.length === 0) {
       console.log('Creating order_items table...');
       await connection.query(`
@@ -160,7 +159,7 @@ async function initializeDatabase() {
         )
       `);
     }
-    
+
     console.log('Database initialization completed successfully');
     connection.release();
   } catch (error) {
@@ -218,7 +217,7 @@ async function addDefaultProducts(connection) {
       popular: true
     }
   ];
-  
+
   // Insert default products
   for (const product of defaultProducts) {
     await connection.query(
